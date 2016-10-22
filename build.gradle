@@ -1,0 +1,26 @@
+subprojects {
+    group 'com.yants'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'war'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile group: 'javax.json', name: 'javax.json-api', version: '+'
+        compile group: 'org.apache.tomcat', name: 'tomcat-websocket', version: '9.0.0.M4'
+        compileOnly 'org.projectlombok:lombok:+'
+        compile'org.mindrot:jbcrypt:+'
+        compile 'mysql:mysql-connector-java:+'
+        compile 'log4j:log4j:+'
+        compile 'javax.servlet:javax.servlet-api:+'
+        testCompile 'junit:junit:+'
+    }
+}
