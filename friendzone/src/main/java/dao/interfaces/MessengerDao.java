@@ -5,7 +5,7 @@ DAO for Messenger
  */
 public interface MessengerDao {
     /**
-    Add message in db
+    Add message in db; int parameters - user's ids
      */
     public void addMessage(String msg, String fromName, int from, int to);
     /**

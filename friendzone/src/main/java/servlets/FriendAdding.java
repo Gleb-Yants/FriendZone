@@ -18,7 +18,7 @@ import static listeners.Provider.FRIENDS;
 import static listeners.Provider.USER_DAO;
 
 /**
- * Created by Gleb_Yants on 02.10.2016.
+Servlet for adding friend(in fact following this user); add friend id in db column friends of users, separated by commas
  */
 @WebServlet("/friendAdding")
 public class FriendAdding extends HttpServlet {
@@ -26,7 +26,7 @@ public class FriendAdding extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = ((User) req.getSession().getAttribute(USER));
         String myId = Integer.toString((user.getId()));
-        String friendId = Integer.toString(Integer.parseInt(req.getParameter("friend_id")));
+        String friendId = Integer.toString(Integer.parseInt(req.getParameter("friend_id")));//follow target
         String message;
         List<Integer> friendTemp = ((User)req.getSession().getAttribute(USER)).getFriends();
         if(friendTemp.contains(Integer.parseInt(friendId))){
@@ -43,7 +43,7 @@ public class FriendAdding extends HttpServlet {
         }else{
         UserDao dao = (UserDao)req.getServletContext().getAttribute(USER_DAO);
         dao.addFriend(myId, friendId);
-        req.getSession().setAttribute(USER, dao.getUserByEmail(user.getLogin()).get());
+        req.getSession().setAttribute(USER, dao.getUserByEmail(user.getLogin()).get());//refresh friend's list for user
             message = "Friend added";
             req.setAttribute("Message", message);
             getServletContext().getRequestDispatcher("/message.jsp").forward(req, resp);

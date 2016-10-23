@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import static filters.SecurityFilter.USER;
 
 /**
- * Created by Gleb_Yants on 10.10.2016.
+Servlet for getting img from fs
  */
 @WebServlet("/getImage")
 public class GetImage extends HttpServlet {

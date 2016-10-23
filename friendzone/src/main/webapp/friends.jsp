@@ -1,4 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%--
+This page provide list of friends (followings), here user can find other people, move to
+other users' pages, see notifications, if other users send him message and he didn't see it before
+--%>
 <html>
 <head>
     <title>Friends</title>

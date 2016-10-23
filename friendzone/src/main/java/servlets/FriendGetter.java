@@ -14,7 +14,7 @@ import java.util.HashMap;
 import static listeners.Provider.FRIENDS;
 
 /**
- * Created by Gleb_Yants on 30.09.2016.
+Servlet for moving to concrete friend
  */
 @WebServlet("/friendGetter")
 public class FriendGetter extends HttpServlet {

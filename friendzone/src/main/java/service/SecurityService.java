@@ -23,7 +23,7 @@ public class SecurityService {
 
         if (passwordByEmail.isPresent()) {
             String pwdHash = passwordByEmail.get();
-            return BCrypt.checkpw(password, pwdHash)
+            return BCrypt.checkpw(password, pwdHash)//jbcrypt
                     ? userDao.getUserByEmail(userName)
                     : Optional.empty();
         } else

@@ -10,7 +10,7 @@ import java.util.Properties;
 
 
 /**
- * Created by Gleb_Yants on 20.10.2016.
+Servlet for changing language
  */
 @WebServlet("/langChanger")
 public class LangChanger extends HttpServlet {

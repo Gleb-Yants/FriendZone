@@ -1,13 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%--
+Main page for log in. Page contains redirect to my page if user yet logged in,
+fields for email and pass to log in, registration field and language changer
+--%>
 <html>
 <head>
     <title>FriendZone</title>
 </head>
 <body>
-<%
-    if (session.getAttribute("user")!=null) response.sendRedirect("myPage.jsp");
-%>
+<c:if test="${sessionScope.user!=null}">
+    <jsp:forward page="myPage.jsp" />
+</c:if>
+<%--
+Getting language properties from session or setting default english
+--%>
 <jsp:useBean id="lang" class="java.util.Properties" scope="session" >
     <c:set var = "lang" scope = "session" value = "${applicationScope.en}" />
 </jsp:useBean>

@@ -1,4 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%--
+Main page of user. There is info about user (first/last name, avatar, info about user).
+Here user can move to friends' list, his settings, log out.
+--%>
 <html>
 <head>
     <title>My Page</title>

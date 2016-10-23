@@ -25,9 +25,13 @@ public class SecurityFilter implements Filter {
     private static final Logger LOG= Logger.getLogger(SecurityFilter.class);
 
     public static final String USER = "user";
-    private final HashSet<String> allowedURI = new HashSet<>(Arrays.asList("","/login.jsp", "/registration.jsp", "/registrator","/langChanger"));
+    /*
+    Allowed uri - this field represents uri that filter except by checking
+     */
+    private final HashSet<String> allowedURI = new HashSet<>(Arrays.asList("","/login.jsp", "/registration.jsp", "/registrator","/langChanger",
+            "/error.jsp","/errorServlet"));
 
-    private SecurityService securityService;
+    private SecurityService securityService;//service for authentication
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         securityService = (SecurityService) filterConfig.getServletContext().getAttribute(SECURITY_SERVICE);
@@ -39,7 +43,7 @@ public class SecurityFilter implements Filter {
         final HttpSession session = httpReq.getSession(true);
         String path = httpReq.getRequestURI().substring(httpReq.getContextPath().length()).replaceAll("[/]+$", "");
         if (Optional.ofNullable(session.getAttribute(USER)).isPresent()) {
-            chain.doFilter(request, response);
+            chain.doFilter(request, response);//it's ok, user logged in yet
         }else if(allowedURI.contains(path)){
             chain.doFilter(request,response);
         } else {

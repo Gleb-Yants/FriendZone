@@ -3,6 +3,7 @@ package dao.mysql;
 import dao.interfaces.MessengerDao;
 import exception.InvalidEmailException;
 import model.Friend;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -16,16 +17,11 @@ import static util.GetLessValue.getLessValue;
 DAO implementation for MySQL
  */
 public class MySQLMessengerDao implements MessengerDao {
-    Map<Integer, Friend> friends;
-
-    public MySQLMessengerDao(Map<Integer, Friend> friends) {
-        this.friends = friends;
-    }
-
+    private static final Logger LOG= Logger.getLogger(MySQLMessengerDao.class);
     @Override
     public void addMessage(String msg, String fromName, int from, int to) {
-        boolean convFirst = false;
-        String betweenWhom = getLessValue(from,to);
+        boolean convFirst = false; //further switching between new conversation and continue of old
+        String betweenWhom = getLessValue(from,to); //ordering for storing in db
         try(Connection conn = dataSource.getConnection()){
             Statement S = conn.createStatement();
             ResultSet RS = S.executeQuery("SELECT betweenThese FROM messages");
@@ -46,13 +42,13 @@ public class MySQLMessengerDao implements MessengerDao {
                 stmt.execute();}
             conn.close();
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
     }
 
     @Override
     public String getConversation(int first, int second) {
-        String betweenWhom = getLessValue(first,second);
-        String convers = "empty";
+        String betweenWhom = getLessValue(first,second);//ordering for storing in db
+        String convers = "empty"; //default value for empty conversation
         try(Connection conn = dataSource.getConnection()){
             PreparedStatement stmt = conn.prepareStatement("SELECT conversation FROM messages WHERE betweenThese=? ");
             stmt.setString(1, betweenWhom);
@@ -62,7 +58,7 @@ public class MySQLMessengerDao implements MessengerDao {
             }
             conn.close();
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
         return convers;
     }
 }

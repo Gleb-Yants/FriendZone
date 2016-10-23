@@ -14,11 +14,11 @@ import java.io.IOException;
 import static filters.SecurityFilter.USER;
 
 /**
- * Created by Gleb_Yants on 15.09.2016.
+LogOut servlet
  */
 @WebServlet("/logOut")
 public class LogOut extends HttpServlet {
-    private static final Logger LOG= Logger.getLogger(LogOut.class);
+    private static final Logger LOG = Logger.getLogger(LogOut.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOG.info("User "+((User)req.getSession().getAttribute(USER)).getLogin()+" log out");

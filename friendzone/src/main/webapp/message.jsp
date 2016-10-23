@@ -1,3 +1,6 @@
+<%--
+This page provide some info from system to user, for example succesful adding to friends, upload picture and other.
+--%>
 <html>
 <head>
     <title>Message</title>

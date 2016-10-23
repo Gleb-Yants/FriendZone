@@ -3,7 +3,7 @@ package util;
 import java.util.ArrayList;
 
 /**
- * Created by Gleb_Yants on 30.09.2016.
+Util method to converse string from db to arraylist
  */
 public class CreateFriendsArray {
     public static ArrayList<Integer> varcharToArrayList(String varchar){

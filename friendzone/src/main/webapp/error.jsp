@@ -1,5 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isErrorPage="true" %>
+<%--
+Error page outputs information about exception, request uri, status code, stack trace
+--%>
 <html>
 <head>
     <title>Show Error Page</title>

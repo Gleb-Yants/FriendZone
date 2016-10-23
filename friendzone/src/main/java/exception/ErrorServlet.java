@@ -16,11 +16,11 @@ import java.util.Optional;
 import static filters.SecurityFilter.USER;
 
 /**
- * Created by Gleb_Yants on 21.10.2016.
+Servlet service application exceptions and log these
  */
 @WebServlet("/errorServlet")
 public class ErrorServlet extends HttpServlet {
-    private static final Logger LOG= Logger.getLogger(ErrorServlet.class);
+    private static final Logger LOG = Logger.getLogger(ErrorServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<User> user = Optional.ofNullable((User)req.getSession().getAttribute(USER));
@@ -30,7 +30,12 @@ public class ErrorServlet extends HttpServlet {
         }else userName = "User not logged in";
         Throwable excep = (Throwable) req.getAttribute("javax.servlet.error.exception");
         String requestUri = (String) req.getAttribute("javax.servlet.error.request_uri");
-        LOG.error("User: "+userName+" by this request: "+requestUri+" had exception", excep);
+        LOG.error("User: "+userName+", by this request: "+requestUri+" had exception", excep);
         req.getRequestDispatcher("/error.jsp").forward(req,resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req,resp);
     }
 }

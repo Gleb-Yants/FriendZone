@@ -19,14 +19,14 @@ import static listeners.Provider.FRIENDS;
 import static listeners.Provider.USER_DAO;
 
 /**
- * Created by Gleb_Yants on 27.09.2016.
+Servlet for searching users by case insensitive query (first and last name)
  */
 @WebServlet("/lookUp")
 public class FriendLookUp extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<Integer, Friend> allFriends = ((UserDao) getServletContext().getAttribute(USER_DAO)).getAllFriends();
-        getServletContext().setAttribute(FRIENDS, allFriends);
+        getServletContext().setAttribute(FRIENDS, allFriends);//get actual info about users in system
         Map<Integer, Friend> friends = (HashMap<Integer, Friend>) getServletContext().getAttribute(FRIENDS);
         String searchQuery = (req.getParameter("searchQuery")).trim();
         ArrayList<Friend> searchResult = new ArrayList<>();
@@ -36,10 +36,9 @@ public class FriendLookUp extends HttpServlet {
             if(friend.getFirstName()!=null&&friend.getLastName()!=null){
             String first = friend.getFirstName();
             String second = friend.getLastName();
-
-            if(first.equals(searchQuery)||second.equals(searchQuery)){
+            if(first.equalsIgnoreCase(searchQuery)||second.equalsIgnoreCase(searchQuery)){
                 searchResult.add(friend);
-            }
+               }
             }
         }
         if(searchResult.isEmpty()){

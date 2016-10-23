@@ -19,7 +19,7 @@ import static listeners.Provider.FRIENDS;
 import static listeners.Provider.USER_DAO;
 
 /**
- * Created by Gleb_Yants on 30.09.2016.
+Servlet provide actual info about user's friends and messages' notifications
  */
 @WebServlet("/friendsList")
 public class FriendsList extends HttpServlet {
@@ -27,7 +27,7 @@ public class FriendsList extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute(USER);
         UserDao dao = (UserDao)req.getServletContext().getAttribute(USER_DAO);
-        User userUpd = dao.getUserById(user.getId()).get();
+        User userUpd = dao.getUserById(user.getId()).get();//refresh info about user
         req.getSession().setAttribute(USER, userUpd);
 
         HashMap<Integer, Friend> friends = (HashMap<Integer, Friend>) getServletContext().getAttribute(FRIENDS);

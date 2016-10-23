@@ -1,3 +1,6 @@
+<%--
+Registration page
+--%>
 <html>
 <head>
     <title>Registration</title>

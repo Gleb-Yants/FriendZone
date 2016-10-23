@@ -4,6 +4,7 @@ import dao.interfaces.UserDao;
 import exception.InvalidEmailException;
 import model.Friend;
 import model.User;
+import org.apache.log4j.Logger;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import static listeners.Provider.dataSource;
  DAO implementation for MySQL
  */
 public class MySQLUserDao implements UserDao {
+    private static final Logger LOG= Logger.getLogger(MySQLUserDao.class);
     public void registerUser(String email, String pass) throws InvalidEmailException{
         try(Connection conn = dataSource.getConnection()){
             Statement S = conn.createStatement();
@@ -32,7 +34,7 @@ public class MySQLUserDao implements UserDao {
                 stmt.execute();
         conn.close();
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
     }
 
     public Optional<String> getPasswordByEmail(String email){
@@ -45,7 +47,7 @@ public class MySQLUserDao implements UserDao {
                 pass = Optional.of(rs.getString(1));
             }
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
         return pass;
     }
 
@@ -59,9 +61,9 @@ public class MySQLUserDao implements UserDao {
             while (rs.next()) {
                 user = Optional.of(new User(rs.getInt(1), email, rs.getString(2), rs.getString(3),rs.getString(4),
                         rs.getInt(5),rs.getString(6),rs.getString(7),varcharToArrayList(rs.getString(8)),varcharToArrayList(rs.getString(9))));
-            }
+            }//varcharToArrayList - util method for transforming string from db to ArrayList
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
         return user;
     }
 
@@ -75,23 +77,21 @@ public class MySQLUserDao implements UserDao {
             while (rs.next()) {
                 user = Optional.of(new User(id, rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4),
                         rs.getInt(5),rs.getString(6),rs.getString(7),varcharToArrayList(rs.getString(8)),varcharToArrayList(rs.getString(9))));
-            }
+            }//varcharToArrayList - util method for transforming string from db to ArrayList
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
         return user;
     }
 
     public void storePhoto(User user, String photoName){
-        String message = "";  // message will be sent back to client
         try(Connection conn = dataSource.getConnection();) {
             String sql = "UPDATE users SET photo=? where login=?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, photoName);
             statement.setString(2, user.getLogin());
-            statement.execute();}catch(SQLException ex){ex.printStackTrace();}
+            statement.execute();}catch(SQLException ex){LOG.error("Caught exception: ", ex);}
 }
-    public void changeUserSettings(User user, String param, String paramValue){
-        String message = "";  // message will be sent back to client
+    public void changeUserSettings(User user, String param, String paramValue){//param=column name in users table
         try(Connection conn = dataSource.getConnection();) {
             String sql="";
             switch (param) {
@@ -107,9 +107,9 @@ public class MySQLUserDao implements UserDao {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, paramValue);
             statement.setString(2, user.getLogin());
-            statement.execute();}catch(SQLException ex){ex.printStackTrace();}
+            statement.execute();}catch(SQLException ex){LOG.error("Caught exception: ", ex);}
     }
-// Get all users in system
+// Get all users in system with friend model
     public Map<Integer, Friend> getAllFriends(){
         Friend friend;
         Map<Integer, Friend> friends = new HashMap<>();
@@ -123,7 +123,7 @@ public class MySQLUserDao implements UserDao {
                 friends.put(friend.getId(), friend);
             }
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
         return friends;
     }
 
@@ -135,13 +135,13 @@ public class MySQLUserDao implements UserDao {
             StringBuilder friends = new StringBuilder();
             while (rs.next()) {
                 friends.append(rs.getString(1));
-                friends.append(friendId+",");
+                friends.append(friendId+",");//storing friend id in varchar column
             }
             String sql = "UPDATE users SET friends=? where user_id=?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, friends.toString());
             statement.setString(2, myId);
-            statement.execute();}catch(SQLException ex){ex.printStackTrace();}
+            statement.execute();}catch(SQLException ex){LOG.error("Caught exception: ", ex);}
     }
 
     public void addNotification(int from, int to){
@@ -151,18 +151,18 @@ public class MySQLUserDao implements UserDao {
             ResultSet rs = stmt.executeQuery();
             String notifTemp="";
             while (rs.next()) {
-                notifTemp = rs.getString(1);
+                notifTemp = rs.getString(1);//getting current notifications
             }
             ArrayList<String> notifTemp2 = new ArrayList<>(Arrays.asList((notifTemp.split(","))));
                 if(!notifTemp2.contains(Integer.toString(from))){
                     String sql = "UPDATE users SET notifications=CONCAT(notifications, ?) where user_id=?";
                     PreparedStatement statement = conn.prepareStatement(sql);
-                    statement.setString(1, from+",");
+                    statement.setString(1, from+",");//refreshing notifications with concatenation
                     statement.setInt(2, to);
                     statement.execute();
 
         }}
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
     }
     public void removeNotification(int from, int to){
         try(Connection conn = dataSource.getConnection()){
@@ -171,11 +171,11 @@ public class MySQLUserDao implements UserDao {
             ResultSet rs = stmt.executeQuery();
             String notifTemp = "";
             while (rs.next()) {
-                notifTemp = rs.getString(1);
+                notifTemp = rs.getString(1);//getting current notifications
             }
             ArrayList<String> notifTemp2 = new ArrayList<>(Arrays.asList((notifTemp.split(","))));
             if(notifTemp2.contains(Integer.toString(from))){
-                notifTemp2.remove(Integer.toString(from));
+                notifTemp2.remove(Integer.toString(from));//removing notification of user from
                 StringBuilder resultNotif = new StringBuilder("");
                 for(String str : notifTemp2){
                     resultNotif.append(str);
@@ -187,6 +187,6 @@ public class MySQLUserDao implements UserDao {
                 statement.execute();
             }
         }
-        catch(SQLException ex){ex.printStackTrace();}
+        catch(SQLException ex){LOG.error("Caught exception: ", ex);}
     }
 }

@@ -21,11 +21,11 @@ import static listeners.Provider.FRIENDS;
 import static listeners.Provider.USER_DAO;
 
 /**
- * Created by Gleb_Yants on 07.09.2016.
+Registration servlet; include checking correctness of email
  */
 @WebServlet("/registrator")
 public class Registrator extends HttpServlet {
-    private static final Logger LOG= Logger.getLogger(Registrator.class);
+    private static final Logger LOG = Logger.getLogger(Registrator.class);
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -39,8 +39,7 @@ public class Registrator extends HttpServlet {
         ud.registerUser(login.get(), hsPass);
             LOG.info("New user registered: "+login.get());
             Map<Integer, Friend> friends = ud.getAllFriends();
-            req.getServletContext().setAttribute(FRIENDS, friends);
+            req.getServletContext().setAttribute(FRIENDS, friends);//refresh all users variable
         }else throw new InvalidEmailException();
-        req.getRequestDispatcher("/login.jsp").forward(req,resp);
     }
 }

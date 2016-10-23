@@ -18,7 +18,7 @@ import static listeners.Provider.FRIENDS;
 import static listeners.Provider.USER_DAO;
 
 /**
- * Created by Gleb_Yants on 21.09.2016.
+Servlet for changing user's settings: first and last name, phone, info about user
  */
 @WebServlet("/changer")
 public class SettingsChanger extends HttpServlet {

@@ -1,4 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%--
+User can reach this page if he click on link of another user (or yourself).
+Page consist of information about "friend" with same name of model (his first/last name,
+info about him, avatar). User can add this user to friends (follow him) in one-way, chat with user(no neccesarily
+to add to friend).
+--%>
 <html>
 <head>
     <title>Friend</title>

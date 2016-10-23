@@ -1,3 +1,7 @@
+<%--
+This page useful by changing information about user (first/last name, phone, info about user, language of pages).
+Also here avatar can be change.
+--%>
 <html>
 <head>
     <title>Settings</title>
