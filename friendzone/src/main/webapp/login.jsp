@@ -17,10 +17,13 @@ Getting language properties from session or setting default english
 <jsp:useBean id="lang" class="java.util.Properties" scope="session" >
     <c:set var = "lang" scope = "session" value = "${applicationScope.en}" />
 </jsp:useBean>
-
 <header>
-    <h2>${lang.login1}</h2>
+    <h2>${lang.login1}</h2><br>
 </header>
+<c:if test="${param.info!=null}">
+    <c:out value="${param.info}"/>
+    <br>
+</c:if>
 <b>${lang.login2}<b>
     <form action="myPage.jsp" method="post">
 

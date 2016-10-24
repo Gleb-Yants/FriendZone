@@ -19,5 +19,8 @@ Registration page
         <input type="submit" value="${lang.registration2}" /><br />
 
     </form>
+    <form action="login.jsp" method="get">
+        <input type="submit" value="${lang.registration3}" /><br />
+    </form>
 </body>
 </html>

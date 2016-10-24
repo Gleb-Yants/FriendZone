@@ -29,17 +29,18 @@ public class Registrator extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Optional<String> login = Optional.of(req.getParameter("email")).filter(s -> !s.isEmpty());
-        Optional<String> pass = Optional.of(req.getParameter("password")).filter(s -> !s.isEmpty());
+        String login = req.getParameter("email");
+        String pass = req.getParameter("password");
         Pattern valid = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = valid.matcher(login.get());
+        Matcher matcher = valid.matcher(login);
         if(matcher.find()){
-            String hsPass = BCrypt.hashpw(pass.get(), BCrypt.gensalt());
+            String hsPass = BCrypt.hashpw(pass, BCrypt.gensalt());
         UserDao ud = (UserDao) getServletContext().getAttribute(USER_DAO);
-        ud.registerUser(login.get(), hsPass);
-            LOG.info("New user registered: "+login.get());
+        ud.registerUser(login, hsPass);
+            LOG.info("New user registered: "+login);
             Map<Integer, Friend> friends = ud.getAllFriends();
             req.getServletContext().setAttribute(FRIENDS, friends);//refresh all users variable
+            resp.sendRedirect("login.jsp?info=Successful registration");
         }else throw new InvalidEmailException();
     }
 }

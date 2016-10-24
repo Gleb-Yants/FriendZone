@@ -178,7 +178,7 @@ public class MySQLUserDao implements UserDao {
                 notifTemp2.remove(Integer.toString(from));//removing notification of user from
                 StringBuilder resultNotif = new StringBuilder("");
                 for(String str : notifTemp2){
-                    resultNotif.append(str);
+                    resultNotif.append(str+",");
                 }
                 String sql = "UPDATE users SET notifications=? where user_id=?";
                 PreparedStatement statement = conn.prepareStatement(sql);

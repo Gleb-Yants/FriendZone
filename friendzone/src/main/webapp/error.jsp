@@ -8,6 +8,9 @@ Error page outputs information about exception, request uri, status code, stack 
     <title>Show Error Page</title>
 </head>
 <body>
+<jsp:useBean id="lang" class="java.util.Properties" scope="session" >
+    <c:set var = "lang" scope = "session" value = "${applicationScope.en}" />
+</jsp:useBean>
 <h1>Opps...</h1>
 <table width="100%" border="1">
     <tr valign="top">
@@ -32,5 +35,8 @@ Error page outputs information about exception, request uri, status code, stack 
         </td>
     </tr>
 </table>
+<form action="login.jsp" method="get">
+    <input type="submit" value="${lang.error1}" /><br />
+</form>
 </body>
 </html>

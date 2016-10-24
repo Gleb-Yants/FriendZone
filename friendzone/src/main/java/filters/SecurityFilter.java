@@ -40,6 +40,7 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpReq = (HttpServletRequest) request;
+        HttpServletResponse httpResp = (HttpServletResponse) response;
         final HttpSession session = httpReq.getSession(true);
         String path = httpReq.getRequestURI().substring(httpReq.getContextPath().length()).replaceAll("[/]+$", "");
         if (Optional.ofNullable(session.getAttribute(USER)).isPresent()) {
@@ -53,10 +54,8 @@ public class SecurityFilter implements Filter {
                 session.setAttribute(USER, userOptional.get());
                 chain.doFilter(request, response);
             } else {
-                LOG.info("Attempt failed for inputed login:"+request.getParameter("login"));
-                if(allowedURI.contains(path)){
-                    request.getRequestDispatcher(path).forward(request, response);
-                }else{ request.getRequestDispatcher("login.jsp").forward(request, response);}
+                LOG.info("Enter attempt failed for login: "+request.getParameter("login"));
+                httpResp.sendRedirect("login.jsp?info=Wrong login or pass");
             }
         }
     }
